@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OAK Coffee Co. & Atelier - Sanat ve Kahve. Sadece bir kahve dükkanı değil, yaratıcılığınızı keşfedeceğiniz bir atölye.">
+    <meta name="theme-color" content="#faf8f5">
+
+    <title>OAK Coffee Co. & Atelier</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #faf8f5; 
+            color: #2b2b2b; 
+            overflow-x: hidden;
+        }
+        
+    
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            box-sizing: border-box;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+        }
+        .nav-links.left { justify-content: flex-start; }
+        .nav-links.right { justify-content: flex-end; }
+        
+        .navbar-logo { 
+            display: flex; 
+            align-items: center; 
+            margin: 0 20px; 
+            flex-shrink: 0; 
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+       
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #c06c45;
+            transition: width 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: #c06c45; }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #2b2b2b;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .hero-section { 
+            height: 85vh; 
+            margin-top: 60px; 
+            position: relative;
+            overflow: hidden;
+            background-color: #2b2b2b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-images {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .slider-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            transform: scale(1.05); 
+        }
+
+        .slider-images img.active { 
+            opacity: 1; 
+            transform: scale(1); 
+            transition: opacity 1.5s ease-in-out, transform 5s linear;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); 
+            z-index: 2;
+        }
+
+        .hero-content { 
+            text-align: center; 
+            color: #fff; 
+            z-index: 3;
+            animation: fadeIn 1.5s ease-out;
+            padding: 0 20px;
+        }
+        .hero-content h1 { 
+            font-size: clamp(2.5rem, 8vw, 4.5rem); 
+            margin-bottom: 15px; 
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+        .hero-content p { 
+            font-size: clamp(1rem, 4vw, 1.4rem);
+            font-weight: 300; 
+            opacity: 0.9;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section { 
+            padding: 6rem 5%; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        .section-title { 
+            text-align: center; 
+            font-size: 2.5rem; 
+            margin-bottom: 3rem; 
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background-color: #c06c45;
+            display: block;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 2.5rem; 
+        }
+        .card { 
+            background: #fff; 
+            border-radius: 20px; 
+            padding: 2.5rem; 
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border: 1px solid #f0f0f0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(192, 108, 69, 0.12);
+            border-color: #c06c45;
+        }
+        .card h3 { font-size: 1.4rem; margin-bottom: 12px; color: #1a1a1a; }
+        .card p { color: #666; line-height: 1.5; font-size: 0.95rem; }
+        .price { font-weight: 800; color: #c06c45; font-size: 1.3rem; margin: 20px 0; }
+        
+        .shopier-btn { 
+            display: inline-block; 
+            padding: 12px 30px; 
+            background-color: #1a1a1a; 
+            color: #fff; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .shopier-btn:hover { background-color: #c06c45; transform: scale(1.05); }
+        
+        .sold-out {
+            background-color: #ececec !important;
+            color: #aaa !important;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
+        .reviews-section { 
+            background-color: #f1ede7; 
+            border-radius: 40px; 
+            padding: 5rem 2rem; 
+            margin: 4rem 5%; 
+        }
+        .review-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+        .review-text { font-style: italic; color: #555; line-height: 1.7; font-size: 1rem; }
+        .stars { color: #f39c12; letter-spacing: 3px; font-size: 1.1rem; margin: 15px 0;}
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: flex-start;
+        }
+        .contact-info h3 { font-size: 1.8rem; margin-bottom: 20px; }
+        .contact-info p { font-size: 1.05rem; line-height: 1.8; margin-bottom: 15px; color: #444; }
+        .social-links { margin-top: 30px; }
+        .social-links a {
+            display: inline-block;
+            margin-right: 20px;
+            color: #c06c45;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+        .social-links a:hover { color: #1a1a1a; }
+
+        footer { background: #1a1a1a; color: #fff; text-align: center; padding: 3rem; margin-top: 5rem; }
+
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; } /* Hamburgeri göster */
+            
+            .nav-links {
+                display: none; /* Varsayılan olarak gizli */
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                text-align: center;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active { display: flex; } /* JS ile açılır */
+
+            .navbar { justify-content: space-between; padding: 10px 5%; }
+            .navbar-logo { margin: 0 auto 0 0; }
+
+            .hero-section { height: 70vh; }
+            .section { padding: 4rem 5%; }
+            .contact-grid { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+            
+            .map-container iframe { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <ul class="nav-links left">
+            <li><a href="#services">Atölyeler</a></li>
+            <li><a href="#reviews">Yorumlar</a></li>
+        </ul>
+        
+        <a href="#" class="navbar-logo">
+            <img src="3.jpg" alt="OAK Logo" style="height: 45px; width: auto;">
+        </a>
+        
+        <ul class="nav-links right">
+            <li><a href="menu.html">Menü</a></li>
+            <li><a href="#contact">İletişim</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero-section">
+        <div class="slider-images">
+            <img src="1.webp" class="active" alt="Atölye Görseli 1">
+            <img src="2.webp" alt="Atölye Görseli 2">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Sanat ve Kahve</h1>
+            <p>Yaratıcılığınızı keşfedeceğiniz huzurlu bir atölye deneyimi.</p>
+        </div>
+    </header>
+
+    <section class="section" id="services">
+        <h2 class="section-title">Atölyelerimiz</h2>
+        <div class="grid">
+            <div class="card">
+                <div>
+                    <h3>Punch Atölyesi</h3>
+                    <p>Modern nakış teknikleriyle kendi dokunmuş tablonuzu tasarlayın.</p>
+                </div>
+                <div>
+                    <div class="price">600 TL</div>
+                    <a href="https://shopier.com/OAKatelier" class="shopier-btn">Kayıt Ol</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div>
+                    <h3>Duygu Akışı: Mum Atölyesi</h3>
+                    <p>Esansların dünyasında kaybolun, size özel kokuyu muma dönüştürün.</p>
+                </div>
+                <div>
+                    <div class="price">1.000 TL</div>
+                    <a href="https://shopier.com/OAKatelier" class="shopier-btn">Kayıt Ol</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h3>Seramik Şekillendirme</h3>
+                    <p>Toprağın enerjisini hissedin, hayalinizdeki objeyi ellerinizle var edin.</p>
+                </div>
+                <div>
+                    <div class="price">1.000 TL</div>
+                    <a href="#" class="shopier-btn sold-out">Tükendi</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h3>Doğal Sabun Atölyesi</h3>
+                    <p>Tamamen doğal yağlar ve kurutulmuş bitkilerle sağlıklı sabun yapımı.</p>
+                </div>
+                <div>
+                    <div class="price">1.000 TL</div>
+                    <a href="#" class="shopier-btn sold-out">Tükendi</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="reviews-section" id="reviews">
+        <h2 class="section-title">Misafir Deneyimleri</h2>
+        <div class="grid">
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"Ankara'nın kalbinde, sakin ve ilham verici bir yer. Kahveleri gerçekten nitelikli."</p>
+                <h4>Yazeka</h4>
+            </div>
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"Bilgisayarımı alıp gitmeyi en sevdiğim yer. Hem priz sorunu yok hem de ortam çok nezih."</p>
+                <h4>Yerel Rehber</h4>
+            </div>
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"Punch atölyesine katıldım, hem çok şey öğrendim hem de çok keyifli vakit geçirdim."</p>
+                <h4>Ziyaretçi Yorumu</h4>
+            </div>
+        </div>
+    </div>
+
+    <section class="section" id="contact">
+        <h2 class="section-title">Bize Ulaşın</h2>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>OAK Coffee Co.</h3>
+                <p>📍 <strong>Adres:</strong> Ayrancı, Kuzgun Cd No: 18 D:C,<br>06830 Çankaya/Ankara</p>
+                <p>📞 <strong>Telefon:</strong> 0530 184 07 81</p>
+                <p>📧 <strong>E-posta:</strong> oakcoffeeco@gmail.com</p>
+                <p>🕒 <strong>Çalışma Saatleri:</strong> Her gün 10:00 – 00:00</p>
+                
+                <div class="social-links">
+                    <p><strong>Bizi Takip Edin:</strong></p>
+                    <a href="https://instagram.com/OAKatelier" target="_blank">Instagram</a>
+                    <a href="https://shopier.com/OAKatelier" target="_blank">Shopier</a>
+                </div>
+            </div>
+            
+            <div class="map-container">
+               <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3060.016335194916!2d32.86159677663236!3d39.90146317152671!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d34f71a44e6c9d%3A0x8e8e7a8e7a8e7a8e!2sKuzgun%20Cd.%20No%3A18%2C%2006830%20%C3%87ankaya%2FAnkara!5e0!3m2!1str!2str!4v1714745800000!5m2!1str!2str" 
+                    width="100%" 
+                    height="350" 
+                    style="border:0; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 OAK Coffee Co. & Atelier. Tüm hakları saklıdır.</p>
+    </footer>
+
+    <script>
+      
+        let currentIndex = 0;
+        const images = document.querySelectorAll('.slider-images img');
+        
+        function nextImage() {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].classList.add('active');
+        }
+        setInterval(nextImage, 5000);
+
+        
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinksLeft = document.querySelector('.nav-links.left');
+        const navLinksRight = document.querySelector('.nav-links.right');
+
+        menuToggle.addEventListener('click', () => {
+            navLinksLeft.classList.toggle('active');
+            navLinksRight.classList.toggle('active');
+
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinksLeft.classList.remove('active');
+                navLinksRight.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
